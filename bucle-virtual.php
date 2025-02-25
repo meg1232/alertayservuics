@@ -33,7 +33,7 @@ if ($resultado) {
 
     }
 } else {
-    echo "<script>alert('Usuario no encontrado'); window.location.href='index.html';</script>";
+    echo "<script>alert('Usuario no encontrado'); window.location.href='index.php';</script>";
     exit();
 }
 ?>
