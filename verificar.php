@@ -30,11 +30,11 @@ if ($resultado) {
             exit();
         default:
             // Redirigir a index.html y agregar un mensaje de error
-            header("Location: ../../index.php?error=1"); // Enviar parámetro de error
+            header("Location: index.php?error=1"); // Enviar parámetro de error
             exit();
     }
 } else {
-    echo "<script>alert('Usuario no encontrado'); window.location.href='index.html';</script>";
+    echo "<script>alert('Usuario no encontrado'); window.location.href='index.php';</script>";
     exit();
 }
 ?>
